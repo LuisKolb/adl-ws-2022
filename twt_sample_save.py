@@ -45,8 +45,10 @@ def get_streaming_client():
                         parent_text = parent_tweet.text.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
                         tweet_id = tweet.id
                         tweet_text = tweet.text.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
+                        entry = f'{parent_id}\t"{parent_text}"\t{tweet_id}\t"{tweet_text}"\n'
+                        print(entry)
                         with open('test_data/tweets.tsv', 'a') as f:
-                            f.write(f'{tweet_id}\t"{tweet_text}"\t{parent_id}\t"{parent_text}"\n')
+                            f.write(entry)
         
         def on_errors(self, errors):
             if errors and errors[0]['type'] == 'https://api.twitter.com/2/problems/not-authorized-for-resource':
@@ -88,9 +90,9 @@ def main(streaming_client: tweepy.StreamingClient):
     for i in range(1,time_to_listen):
         time.sleep(1)
         i += 1
+    streaming_client.disconnect()
     print("[INFO] done streaming")
 
-    streaming_client.disconnect()
 
     return 0
 
