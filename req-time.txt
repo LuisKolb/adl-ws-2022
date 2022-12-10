@@ -1,0 +1,2 @@
+30 seconds of twitter sampling: ~1200 tweets
+time to get ~1200 GPT-3 responses from davinci-003: ~50 minutes with rate limiting (18:50-19:40, 10.12.2022)

@@ -28,7 +28,7 @@ def get_client():
 
     return client
 
-def get_streaming_client():
+def get_streaming_client(filename: str):
     """
     overload methods from inherited class to customize processing of incoming stream data
     """
@@ -47,7 +47,7 @@ def get_streaming_client():
                         tweet_text = tweet.text.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
                         entry = f'{parent_id}\t"{parent_text}"\t{tweet_id}\t"{tweet_text}"\n'
                         print(entry)
-                        with open('test_data/tweets.tsv', 'a') as f:
+                        with open(filename, 'a') as f:
                             f.write(entry)
         
         def on_errors(self, errors):
@@ -79,7 +79,12 @@ def check_rule(streaming_client: tweepy.StreamingClient, rule: str):
         return streaming_client.get_rules()
 
 
-def main(streaming_client: tweepy.StreamingClient):
+def main(streaming_client: tweepy.StreamingClient, save_to: str):
+    # ensure file exists
+    header = 'parent_id\tparent_text\ttweet_id\ttweet_text\n'
+    if not os.path.isfile(save_to): 
+        with open(save_to, 'a') as f:
+            f.write(header)
 
     # threded is required to be able to disconnect the stream
     streaming_client.filter(tweet_fields='id,text,referenced_tweets', expansions=['referenced_tweets.id'], threaded=True)
@@ -93,16 +98,16 @@ def main(streaming_client: tweepy.StreamingClient):
     streaming_client.disconnect()
     print("[INFO] done streaming")
 
-
     return 0
 
 
 
 if __name__ == '__main__':
     filter_rule = 'lang:en is:reply -has:links followers_count:100'
+    filename = 'test_data/tweets.tsv'
 
-    streaming_client = get_streaming_client()
+    streaming_client = get_streaming_client(filename)
     
     #print(check_rule(streaming_client, filter_rule))
 
-    sys.exit(main(streaming_client))
+    sys.exit(main(streaming_client, filename))

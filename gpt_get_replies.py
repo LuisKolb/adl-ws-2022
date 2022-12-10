@@ -19,20 +19,20 @@ def get_reply_from_model(tweet: str, model: str ='text-davinci-003'):
         response_dict = openai.Completion.create(model=model, prompt=prompt, temperature=0.9, max_tokens=70, n=1)
         return (response_dict['id'], response_dict['choices'][0]['text'])
 
-    except openai.error.RateLimitError:
-        print('[INFO] rate limit reached, sleeping for 60 seconds and retrying request...')
-        time.sleep(60)
-        response_dict = openai.Completion.create(model=model, prompt=prompt, temperature=0.9, max_tokens=70, n=1)
-        return (response_dict['id'], response_dict['choices'][0]['text'])
-
-    except openai.error.ServiceUnavailableError:
-        print('[INFO] ServiceUnavailableError encountered, sleeping for 60 seconds and retrying request...')
+    except (openai.error.RateLimitError, openai.error.ServiceUnavailableError) as e:
+        print(f'[INFO] openAI error {type(e)}, sleeping for 60 seconds and retrying request...')
         time.sleep(60)
         response_dict = openai.Completion.create(model=model, prompt=prompt, temperature=0.9, max_tokens=70, n=1)
         return (response_dict['id'], response_dict['choices'][0]['text'])
 
 def generate_from_file(read_from: str, save_to: str, limit: int = 100):
     auth()
+
+    # ensure file exists
+    header = 'tweet_id\ttweet_text\treply_id\treply_text\n'
+    if not os.path.isfile(save_to): 
+        with open(save_to, 'a') as f:
+            f.write(header)
 
     skip_until = sum(1 for _ in open(save_to)) # pick up from previous run in case of runtime error/rate limit during prev run
 
