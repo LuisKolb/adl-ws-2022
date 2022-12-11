@@ -43,4 +43,5 @@ def get_data_with_labels(machine_replies_fn: str, human_replies_fn: str, save_to
     return 0
 
 if __name__ == '__main__':
+    combine_files('test_data/gpt-replies.tsv', 'test_data/tweets.tsv', 'data/data_run_1.tsv')
     sys.exit(0)
