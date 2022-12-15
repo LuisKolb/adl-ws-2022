@@ -34,7 +34,7 @@ To use the data set with the notebook, we use Google Drive. Upload the `.zip` fi
 
 Click this Google Colab badge to get there:
 
-[![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/LuisKolb/adl-ws-2022/blob/main/colab_run_2.ipynb)
+[![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Ao1Lzg3UZ2bYAiSdA1ThCYJNTnU2aczL?usp=sharing)
 
 ---
 
