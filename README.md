@@ -46,7 +46,7 @@ Since I'm unsure if tweet text can be shared according to the TOS, instead the `
 - the human reply tweet id (no text)
 - GPT-3 generated text reply to the tweet
 
-from the output files left behind by `main.py`. Such a data set is available attached to a release [here](TODO) as a `.zip` file.
+from the output files left behind by `main.py`. Such a data set is available attached to a release [here](https://github.com/LuisKolb/adl-ws-2022/releases/tag/v0.1) as a `.tsv` file.
 
 The tweet text for the human reply will need to be fetched separately using the ids if 1-to-1 comparison is required, sorry!
 
