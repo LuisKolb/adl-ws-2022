@@ -129,13 +129,19 @@ dmypy.json
 .pyre/
 
 # custom
+
+# use this pattern to commit "empty" directories 
+# (ignore everything, keep an empty file there since git doesn't track dirs, only files
 data/*.tsv
-!data/README.md
+!data/.gitkeep
 
 out/*
-!out/README.md
+!out/.gitkeep
 
 saved_models/*
-!saved_models/README.md
+!saved_models/.gitkeep
 
 recent_ids.json
+
+test.py
+test.ipynb

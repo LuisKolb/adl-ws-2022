@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 import json
 import os
 import re
-from tempfile import mkstemp
 import tensorflow as tf 
+import tensorflow_text # required to load a saved model built with tf-text
 
 # twitter SDK
 import tweepy
@@ -104,7 +104,7 @@ def check_mentions(api, handle, model):
             
             input = [re.sub(r'@\w+(\s)', r'\1', status.text)] # strip @usernames from text input
             reloaded_results = tf.sigmoid(model(tf.constant(input))) # run inference
-            inference_conf = reloaded_results[0][0] # get score from model results, from [0...1]
+            inference_conf = reloaded_results[0][0].numpy() # get score from model results, from [0...1]
 
             # label reminder: 0=human, 1=machine
             # TODO: more variation

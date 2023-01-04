@@ -1,1 +1,0 @@
-This folder is where output is written to. Its contents are not commited to github.
