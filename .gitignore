@@ -130,4 +130,12 @@ dmypy.json
 
 # custom
 data/*.tsv
+!data/README.md
+
 out/*
+!out/README.md
+
+saved_models/*
+!saved_models/README.md
+
+recent_ids.json

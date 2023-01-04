@@ -1,0 +1,1 @@
+This is an intermediate directory where tweets and completions are downloaded to. Its contents are not commited to github.
