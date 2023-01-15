@@ -99,20 +99,38 @@ def check_mentions(api, handle, model):
                 oldest_seen = status.id
             if status.id > highest_id_in_run:
                 highest_id_in_run = status.id
-            
-            # TODO: update transformers with inputs from twt?
-            
-            input = [re.sub(r'@\w+(\s)', r'\1', status.text)] # strip @usernames from text input
-            reloaded_results = tf.sigmoid(model(tf.constant(input))) # run inference
+
+            parent_status_id = status.in_reply_to_status_id # get parent tweet
+
+            if not parent_status_id:
+                continue # do nothing if not a reply under a tweet
+
+            # get parent tweet object
+            try:
+                parent_status = api.get_status(parent_status_id, trim_user=True, include_entities=False)
+            except tweepy.errors.Forbidden:
+                # need to account for tweets from private accounts
+                print('[INFO] encountered tweet reply to private account, cannot fetch parent tweet')
+                continue
+
+            # TODO: update transformers with inputs from twt?   
+            input = re.sub(r'@\w+(\s)', r'\1', parent_status.text) # strip @usernames from text input
+            input = re.sub(r'http\S+', '', input) # strip media urls
+            reloaded_results = tf.sigmoid(model(tf.constant([input]))) # run inference
             inference_conf = reloaded_results[0][0].numpy() # get score from model results, from [0...1]
 
             # label reminder: 0=human, 1=machine
             # TODO: more variation
             # TODO: test me
-            reply_text = f'hi @{status.user.screen_name}! on a scale of 0=human to 1=GPT-3, the tweet you tagged me under got a score of {inference_conf:.6f}'
+            reply_text = f'hi @{status.user.screen_name}! on a scale of 0=human to 1=GPT-3, the tweet you replied to got a score of {inference_conf:.4f}'
             api.update_status(reply_text, in_reply_to_status_id=status.id, auto_populate_reply_metadata=True)
+            #print(f'status.text: "{status.text}"')
+            #print(f'input: "{input}"')
+            #print(f'reply_text: "{reply_text}"')
 
         i = i+1
+
+    return('[INFO] Done!')
 
 
 if __name__ == '__main__':
