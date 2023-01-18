@@ -2,10 +2,13 @@
 
 ## distinguishing human-authored text from machine-generated text
 
+There is also [YouTube video](https://youtu.be/sAPBFAO1leY) with a quick overview of the project.
+
 Course Deliverables:
 
 - [Assignment 1 - Initiate](./concept.md)
 - [Assignment 2 - Hacking](./hacking.md)
+- [Assignment 3 - Deliver](./report.pdf)
 
 ---
 
